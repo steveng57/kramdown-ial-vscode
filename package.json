@@ -1,0 +1,27 @@
+{
+  "name": "kramdown-ial-injection",
+  "displayName": "Kramdown IAL (Markdown Injection)",
+  "description": "Adds syntax highlighting scopes for Kramdown inline attribute lists (e.g. {: .class #id key=\"value\"}) inside Markdown.",
+  "version": "0.0.1",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "scripts": {
+    "package": "npx @vscode/vsce package --no-dependencies"
+  },
+  "contributes": {
+    "grammars": [
+      {
+        "scopeName": "text.kramdown-ial",
+        "path": "./syntaxes/kramdown-ial.tmLanguage.json",
+        "injectTo": [
+          "text.html.markdown"
+        ]
+      }
+    ]
+  }
+}

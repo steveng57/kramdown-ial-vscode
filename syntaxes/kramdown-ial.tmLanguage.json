@@ -1,0 +1,83 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Kramdown IAL Injection",
+  "scopeName": "text.kramdown-ial",
+  "injectionSelector": "L:text.html.markdown -markup.fenced_code.block.markdown -markup.raw.block.markdown -markup.inline.raw.string.markdown -comment",
+  "patterns": [
+    {
+      "name": "meta.attribute-list.kramdown",
+      "begin": "(\\{:)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.attribute-list.begin.kramdown" }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.attribute-list.end.kramdown" }
+      },
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.kramdown",
+          "match": "#(?=\\s|$)"
+        },
+        {
+          "name": "entity.other.attribute-name.class.kramdown",
+          "match": "\\.[A-Za-z0-9_-]+"
+        },
+        {
+          "name": "entity.other.attribute-name.id.kramdown",
+          "match": "#[A-Za-z0-9_-]+"
+        },
+        {
+          "name": "string.quoted.double.kramdown",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.kramdown" }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.kramdown" }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.kramdown",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.kramdown",
+          "begin": "'",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.kramdown" }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.kramdown" }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.kramdown",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "meta.attribute.assignment.kramdown",
+          "match": "([A-Za-z_][A-Za-z0-9_-]*)(\\s*)(=)",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.kramdown" },
+            "3": { "name": "keyword.operator.assignment.kramdown" }
+          }
+        },
+        {
+          "name": "constant.language.boolean.kramdown",
+          "match": "\\b(true|false)\\b"
+        },
+        {
+          "name": "constant.numeric.kramdown",
+          "match": "\\b\\d+\\b"
+        }
+      ]
+    }
+  ]
+}
