@@ -5,6 +5,7 @@
   "version": "0.0.1",
   "publisher": "local",
   "license": "MIT",
+  "icon": "images/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/steveng57/kramdown-ial-vscode.git"

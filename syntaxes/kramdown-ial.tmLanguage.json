@@ -3,17 +3,8 @@
   "name": "Kramdown IAL Injection",
   "scopeName": "text.kramdown-ial",
   "injectionSelector": "L:text.html.markdown -markup.fenced_code.block.markdown -markup.raw.block.markdown -markup.inline.raw.string.markdown -comment",
-  "patterns": [
-    {
-      "name": "meta.attribute-list.kramdown",
-      "begin": "(\\{:)",
-      "beginCaptures": {
-        "1": { "name": "punctuation.definition.attribute-list.begin.kramdown" }
-      },
-      "end": "(\\})",
-      "endCaptures": {
-        "1": { "name": "punctuation.definition.attribute-list.end.kramdown" }
-      },
+  "repository": {
+    "attributeContent": {
       "patterns": [
         {
           "name": "comment.line.number-sign.kramdown",
@@ -76,6 +67,91 @@
         {
           "name": "constant.numeric.kramdown",
           "match": "\\b\\d+\\b"
+        }
+      ]
+    }
+  },
+  "patterns": [
+    {
+      "name": "meta.end-of-block-marker.kramdown",
+      "match": "(?m)^(\\s{0,3})(\\^)(\\s*)$",
+      "captures": {
+        "2": { "name": "punctuation.definition.end-of-block-marker.kramdown" }
+      }
+    },
+    {
+      "name": "meta.header-id.kramdown",
+      "match": "(?m)(?<=\\s)(\\{#)([A-Za-z0-9_-]+)(\\})(?=\\s*$)",
+      "captures": {
+        "1": { "name": "punctuation.definition.header-id.begin.kramdown" },
+        "2": { "name": "entity.other.attribute-name.id.kramdown" },
+        "3": { "name": "punctuation.definition.header-id.end.kramdown" }
+      }
+    },
+    {
+      "name": "meta.extension.kramdown",
+      "begin": "(\\{::)([A-Za-z_][A-Za-z0-9_-]*)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.extension.begin.kramdown" },
+        "2": { "name": "entity.name.function.kramdown" }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.extension.end.kramdown" }
+      },
+      "patterns": [
+        {
+          "name": "punctuation.definition.extension.self-close.kramdown",
+          "match": "/(?=\\s*\\})"
+        },
+        {
+          "include": "#attributeContent"
+        }
+      ]
+    },
+    {
+      "name": "meta.extension.end.kramdown",
+      "begin": "(\\{:/)([A-Za-z_][A-Za-z0-9_-]*)?",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.extension.endtag.begin.kramdown" },
+        "2": { "name": "entity.name.function.kramdown" }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.extension.endtag.end.kramdown" }
+      }
+    },
+    {
+      "name": "meta.attribute-list-definition.kramdown",
+      "begin": "(\\{:)(\\s*[A-Za-z0-9][A-Za-z0-9_-]*)(:)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.attribute-list.begin.kramdown" },
+        "2": { "name": "entity.name.label.kramdown" },
+        "3": { "name": "punctuation.separator.attribute-list-definition.kramdown" }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.attribute-list.end.kramdown" }
+      },
+      "patterns": [
+        {
+          "include": "#attributeContent"
+        }
+      ]
+    },
+    {
+      "name": "meta.attribute-list.kramdown",
+      "begin": "(\\{:)(?!:)(?!\\s*[A-Za-z0-9][A-Za-z0-9_-]*:)",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.attribute-list.begin.kramdown" }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.attribute-list.end.kramdown" }
+      },
+      "patterns": [
+        {
+          "include": "#attributeContent"
         }
       ]
     }

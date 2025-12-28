@@ -7,6 +7,10 @@ Examples it targets:
 - `{: .sjg-list }`
 - `{:target='_blank'}`
 - `{: target="_blank" .btn #hero }`
+- `{:ref-name: #myid .my-class}` (attribute list definition)
+- `{::comment}ignored{:/comment}` (extension)
+- `^` (end-of-block marker line)
+- `# Heading {#my-id}` (explicit header id)
 
 ## What it does
 
@@ -27,6 +31,10 @@ Examples it targets:
 You should see scopes such as:
 
 - `meta.attribute-list.kramdown`
+- `meta.attribute-list-definition.kramdown`
+- `meta.extension.kramdown`
+- `meta.end-of-block-marker.kramdown`
+- `meta.header-id.kramdown`
 - `punctuation.definition.attribute-list.begin.kramdown`
 - `punctuation.definition.attribute-list.end.kramdown`
 - `entity.other.attribute-name.class.kramdown` (e.g. `.btn`)
@@ -57,6 +65,47 @@ If your theme doesn’t color these scopes by default, add workspace or user set
         "keyword.operator.assignment.kramdown"
       ],
       "settings": { "foreground": "#79C0FF" }
+    },
+    {
+      "name": "Kramdown strings",
+      "scope": [
+        "string.quoted.double.kramdown",
+        "string.quoted.single.kramdown"
+      ],
+      "settings": { "foreground": "#79C0FF" }
+    },
+    {
+      "name": "Kramdown extension delimiters",
+      "scope": [
+        "punctuation.definition.extension.begin.kramdown",
+        "punctuation.definition.extension.end.kramdown",
+        "punctuation.definition.extension.endtag.begin.kramdown",
+        "punctuation.definition.extension.endtag.end.kramdown",
+        "punctuation.definition.extension.self-close.kramdown"
+      ],
+      "settings": { "foreground": "#FFA657" }
+    },
+    {
+      "name": "Kramdown extension name",
+      "scope": [
+        "entity.name.function.kramdown"
+      ],
+      "settings": { "foreground": "#79C0FF" }
+    },
+    {
+      "name": "Kramdown end-of-block marker",
+      "scope": [
+        "punctuation.definition.end-of-block-marker.kramdown"
+      ],
+      "settings": { "foreground": "#FFA657" }
+    },
+    {
+      "name": "Kramdown explicit header id delimiters",
+      "scope": [
+        "punctuation.definition.header-id.begin.kramdown",
+        "punctuation.definition.header-id.end.kramdown"
+      ],
+      "settings": { "foreground": "#FFA657" }
     }
   ]
 }
