@@ -4,6 +4,11 @@
   "description": "Adds syntax highlighting scopes for Kramdown inline attribute lists (e.g. {: .class #id key=\"value\"}) inside Markdown.",
   "version": "0.0.1",
   "publisher": "local",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/steveng57/kramdown-ial-vscode.git"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },

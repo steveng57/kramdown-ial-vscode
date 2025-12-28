@@ -1,6 +1,6 @@
 # Kramdown IAL (Markdown Injection)
 
-This is a tiny local VS Code extension that injects a TextMate grammar into Markdown to give **Kramdown inline attribute lists** distinct scopes.
+VS Code extension that injects a TextMate grammar into Markdown to give **Kramdown inline attribute lists** (`{: ... }`) distinct scopes for syntax highlighting.
 
 Examples it targets:
 
@@ -10,23 +10,32 @@ Examples it targets:
 
 ## What it does
 
-- Adds TextMate scopes to `{: ... }` blocks so themes / workspace token rules can color them.
-- Avoids fenced code blocks and raw blocks (best-effort) via the injection selector.
+- Adds TextMate scopes inside `{: ... }` so themes / token rules can color them.
+- Injects into Markdown (`text.html.markdown`) and tries to avoid fenced / raw code regions (best-effort).
 
-## What it does NOT do
+## What it does not do
 
-- No validation / IntelliSense / parsing — this is syntax highlighting only.
+- No validation, parsing, IntelliSense, or formatting — this is **syntax highlighting only**.
 
 ## Use (local development)
 
-1. Open this folder in VS Code: `tools/vscode-kramdown-ial`
-2. Press `F5` (Run Extension)
-3. In the new "Extension Development Host" window, open one of your posts under `_posts/.../*.md`
-4. Run `Developer: Inspect Editor Tokens and Scopes` on the `{: ... }` region to confirm you see `meta.attribute-list.kramdown` scopes.
+1. Open this repo folder in VS Code.
+2. Press `F5` (Run Extension).
+3. In the new “Extension Development Host” window, open a Markdown file containing `{: ... }`.
+4. Run `Developer: Inspect Editor Tokens and Scopes` on the `{: ... }` region.
+
+You should see scopes such as:
+
+- `meta.attribute-list.kramdown`
+- `punctuation.definition.attribute-list.begin.kramdown`
+- `punctuation.definition.attribute-list.end.kramdown`
+- `entity.other.attribute-name.class.kramdown` (e.g. `.btn`)
+- `entity.other.attribute-name.id.kramdown` (e.g. `#hero`)
+- `entity.other.attribute-name.kramdown` and `keyword.operator.assignment.kramdown` (e.g. `key=`)
 
 ## Optional: color rules
 
-If your theme doesn’t color these scopes by default, add workspace rules like:
+If your theme doesn’t color these scopes by default, add workspace or user settings like:
 
 ```jsonc
 "editor.tokenColorCustomizations": {
@@ -40,7 +49,7 @@ If your theme doesn’t color these scopes by default, add workspace rules like:
       "settings": { "foreground": "#FFA657" }
     },
     {
-      "name": "Kramdown IAL class/id",
+      "name": "Kramdown IAL attributes",
       "scope": [
         "entity.other.attribute-name.class.kramdown",
         "entity.other.attribute-name.id.kramdown",
@@ -53,11 +62,11 @@ If your theme doesn’t color these scopes by default, add workspace rules like:
 }
 ```
 
-## Install into your normal VS Code (VSIX)
+## Install (VSIX)
 
-If you don't want to use the Extension Development Host window, you can package and install this as a VSIX:
+This repo is set up for local packaging via `vsce`:
 
-1. Open a terminal in this folder: `tools/vscode-kramdown-ial`
-2. Run: `npx @vscode/vsce package --no-dependencies`
-3. In VS Code: `Extensions: Install from VSIX...` and pick the generated `.vsix`
-4. `Developer: Reload Window`
+1. From this folder, run: `npm run package`
+2. In VS Code, run: `Extensions: Install from VSIX...`
+3. Pick the generated `.vsix` file (for example `kramdown-ial-injection-0.0.1.vsix`).
+4. Run: `Developer: Reload Window`
