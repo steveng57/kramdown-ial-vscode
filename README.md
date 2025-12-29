@@ -14,7 +14,7 @@ Examples it targets:
 
 ## What it does
 
-- Adds TextMate scopes inside `{: ... }` so themes / token rules can color them.
+- Adds TextMate scopes inside `{: ... }` so themes / token rules can colour them.
 - Injects into Markdown (`text.html.markdown`) and tries to avoid fenced / raw code regions (best-effort).
 
 ## What it does not do
@@ -55,9 +55,11 @@ You should see scopes such as:
 - `entity.other.attribute-name.id.kramdown` (e.g. `#hero`)
 - `entity.other.attribute-name.kramdown` and `keyword.operator.assignment.kramdown` (e.g. `key=`)
 
-## Optional: color rules
+## Optional: colour rules
 
-If your theme doesn’t color these scopes by default, add workspace or user settings like:
+Not all themes support markdown or kramdown scopes.  The `Kramdown Dark` and `Kramdown Light` themes included in this extension do, so these rules are not needed if you use theme.
+
+However, tf your theme doesn’t colour these scopes by default, add workspace or user settings like:
 
 ```jsonc
 "editor.tokenColorCustomizations": {
