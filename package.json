@@ -2,7 +2,7 @@
   "name": "kramdown-ial-injection",
   "displayName": "Kramdown IAL (Markdown Injection)",
   "description": "Adds syntax highlighting scopes for Kramdown inline attribute lists (e.g. {: .class #id key=\"value\"}) inside Markdown.",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "publisher": "local",
   "license": "MIT",
   "icon": "images/icon.png",
@@ -14,7 +14,8 @@
     "vscode": "^1.85.0"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Themes"
   ],
   "scripts": {
     "package": "npx @vscode/vsce package --no-dependencies"
@@ -28,6 +29,18 @@
           "text.html.markdown"
         ]
       }
+    ],
+    "themes": [
+      {
+        "label": "Kramdown Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/Kramdown Dark-color-theme.json"
+      },
+      {
+        "label": "Kramdown Light",
+        "uiTheme": "vs",
+        "path": "./themes/Kramdown Light-color-theme.json"
+      }
     ]
   },
   "keywords": [
@@ -37,6 +50,10 @@
     "ial",
     "inline attribute list",
     "syntax highlighting",
-    "textmate"
+    "textmate",
+    "theme",
+    "dark theme",
+    "light theme",
+    "vscode theme"
   ]
 }

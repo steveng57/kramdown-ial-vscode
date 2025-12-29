@@ -21,6 +21,20 @@ Examples it targets:
 
 - No validation, parsing, IntelliSense, or formatting — this is **syntax highlighting only**.
 
+## Included Color Themes
+
+This extension now includes two color themes that are optimized to work with markdown, kramdown, and the IAL:
+
+- **Kramdown Dark**: A dark theme designed for comfortable reading and editing.
+- **Kramdown Light**: A light theme for bright environments and high contrast.
+
+To use these themes:
+1. Open the Command Palette (`Ctrl+Shift+P`).
+2. Type and select `Preferences: Color Theme`.
+3. Choose either **Kramdown Dark** or **Kramdown Light** from the list.
+
+These themes are available in addition to the Kramdown IAL syntax highlighting.
+
 ## Use (local development)
 
 1. Open this repo folder in VS Code.
