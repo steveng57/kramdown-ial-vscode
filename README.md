@@ -19,7 +19,7 @@ Examples it targets:
 
 ## What it does not do
 
-- No validation, parsing, IntelliSense, or formatting — this is **syntax highlighting only**.
+- No validation, parsing, IntelliSense, or formatting — this is **syntax highlighting only**, so it will not interfere with any language extensions for markdown or kramdown.
 
 ## Included Colour Themes
 
