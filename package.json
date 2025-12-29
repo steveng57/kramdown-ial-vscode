@@ -2,7 +2,7 @@
   "name": "kramdown-ial-injection",
   "displayName": "Kramdown IAL (Markdown Injection)",
   "description": "Adds syntax highlighting scopes for Kramdown inline attribute lists (e.g. {: .class #id key=\"value\"}) inside Markdown.",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "publisher": "local",
   "license": "MIT",
   "icon": "images/icon.png",

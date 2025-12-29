@@ -81,7 +81,7 @@
           "match": "\\b\\d+(?:\\.\\d+)?\\b"
         },
         {
-          "name": "string.unquoted.attribute-value.kramdown",
+          "name": "string.unquoted.attribute-value.kramdown string.unquoted",
           "match": "(?<=\\=)\\s*([A-Za-z0-9][A-Za-z0-9._%\\/-]*)"
         }
       ]
