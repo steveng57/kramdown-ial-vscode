@@ -106,18 +106,27 @@ $ErrorActionPreference = "Stop"
 
 function Exec
 {
-    param([Parameter(Mandatory = $true)][string]$Command)
-    Write-Host "> $Command"
-    $output = & powershell -NoProfile -Command $Command 2>&1
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true, Position = 0)]
+        [string]$File,
+
+        [Parameter(ValueFromRemainingArguments = $true)]
+        [string[]]$Args
+    )
+
+    $display = @($File) + @($Args)
+    Write-Host ("> " + ($display -join ' '))
+
+    $output = & $File @Args 2>&1
     $exitCode = $LASTEXITCODE
     if ($exitCode -ne 0)
     {
         $output | ForEach-Object { Write-Host $_ }
-        throw "Command failed (exit $exitCode): $Command"
+        throw "Command failed (exit $exitCode): $File $($Args -join ' ')"
     }
 
-    # PowerShell can return either a single string or an array of strings depending on the command.
-    # Always normalize to an array of strings so callers can safely index/pipeline.
+    # Normalize to an array of strings so callers can safely pipeline/index.
     return @($output | ForEach-Object { "$_" })
 }
 
@@ -187,16 +196,16 @@ if ($Bump -and $SetVersion)
     throw "Specify only one of -Bump or -SetVersion."
 }
 
-$currentBranch = (Exec "git rev-parse --abbrev-ref HEAD" | Select-Object -First 1).Trim()
+$currentBranch = (Exec git rev-parse --abbrev-ref HEAD | Select-Object -First 1).Trim()
 if (-not $Force -and $currentBranch -ne $Branch)
 {
     throw "You are on '$currentBranch' but -Branch is '$Branch'. Switch branches or pass -Force."
 }
 
 # Basic safety checks
-Exec "git rev-parse --is-inside-work-tree" | Out-Null
+Exec git rev-parse --is-inside-work-tree | Out-Null
 
-$gitStatus = @(Exec "git status --porcelain")
+$gitStatus = @(Exec git status --porcelain)
 if ($gitStatus.Count -gt 0)
 {
     throw "Working tree is not clean. Commit or stash changes before releasing."
@@ -255,15 +264,15 @@ if ($Bump -or $SetVersion)
 
     if ($PSCmdlet.ShouldProcess("package.json", "git add"))
     {
-        Exec "git add package.json" | Out-Null
+        Exec git add package.json | Out-Null
     }
 
     if ($PSCmdlet.ShouldProcess($msg, "git commit"))
     {
-        Exec "git commit -m \"$msg\"" | Out-Null
+        Exec git commit -m $msg | Out-Null
     }
 
-    $gitStatusAfterCommit = @(Exec "git status --porcelain")
+    $gitStatusAfterCommit = @(Exec git status --porcelain)
     if ($gitStatusAfterCommit.Count -gt 0)
     {
         throw "Working tree is not clean after committing version bump."
@@ -277,14 +286,14 @@ Write-Host "Version: $version"
 Write-Host "Tag:     $tag"
 
 # Ensure tag doesn't already exist locally
-$existingLocalTag = @(Exec "git tag -l \"$tag\"")
+$existingLocalTag = @(Exec git tag -l $tag)
 if ($existingLocalTag.Count -gt 0 -and -not $Force)
 {
     throw "Tag '$tag' already exists locally. Use -Force to overwrite (not recommended)."
 }
 
 # Ensure tag doesn't already exist on remote
-$existingRemote = @(Exec "git ls-remote --tags $Remote $tag")
+$existingRemote = @(Exec git ls-remote --tags $Remote $tag)
 if ($existingRemote.Count -gt 0 -and -not $Force)
 {
     throw "Tag '$tag' already exists on remote '$Remote'. Refusing to continue."
@@ -294,7 +303,7 @@ if (-not $SkipBranchPush)
 {
     if ($PSCmdlet.ShouldProcess("$Remote/$Branch", "git push"))
     {
-        Exec "git push $Remote $Branch" | Out-Null
+        Exec git push $Remote $Branch | Out-Null
     }
 }
 
@@ -302,11 +311,11 @@ if ($PSCmdlet.ShouldProcess($tag, "git tag"))
 {
     if ($Force)
     {
-        Exec "git tag -f -a $tag -m $tag" | Out-Null
+        Exec git tag -f -a $tag -m $tag | Out-Null
     }
     else
     {
-        Exec "git tag -a $tag -m $tag" | Out-Null
+        Exec git tag -a $tag -m $tag | Out-Null
     }
 }
 
@@ -314,11 +323,11 @@ if ($PSCmdlet.ShouldProcess("$Remote $tag", "git push"))
 {
     if ($Force)
     {
-        Exec "git push -f $Remote $tag" | Out-Null
+        Exec git push -f $Remote $tag | Out-Null
     }
     else
     {
-        Exec "git push $Remote $tag" | Out-Null
+        Exec git push $Remote $tag | Out-Null
     }
 }
 
