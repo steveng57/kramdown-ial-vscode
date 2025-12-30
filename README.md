@@ -163,3 +163,20 @@ Notes:
 - Publishing will fail if the extension version in `package.json` is already published.
 - Tagging does not automatically bump versions; bump `package.json` first, then tag.
 - The publish workflow validates that the tag version matches `package.json`.
+
+### Release script (PowerShell)
+
+If you don't want to remember the tag/push steps, use `release.ps1` from the repo root:
+
+Option A (you already bumped/committed the version):
+
+1. Commit your version bump in `package.json`
+2. Run: `./release.ps1`
+
+Option B (auto-bump + commit + tag + push):
+
+- Patch bump: `./release.ps1 -Bump patch`
+- Minor bump: `./release.ps1 -Bump minor`
+- Major bump: `./release.ps1 -Bump major`
+
+This reads the version from `package.json`, creates the matching tag (e.g. `v0.1.16`), pushes `main`, then pushes the tag to trigger the publish workflow.
