@@ -6,7 +6,7 @@ on:
       - "v*"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   publish:
@@ -32,10 +32,26 @@ jobs:
             exit 1
           fi
 
+      - name: Package VSIX
+        id: package
+        shell: bash
+        run: |
+          PKG_NAME=$(node -p "require('./package.json').name")
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          VSIX_BASENAME="${PKG_NAME}-${PKG_VERSION}.vsix"
+          echo "Packaging ${VSIX_BASENAME}..."
+          npx @vscode/vsce package --no-dependencies --out "${VSIX_BASENAME}"
+          echo "vsix_path=${VSIX_BASENAME}" >> "$GITHUB_OUTPUT"
+
       - name: Publish to VS Code Marketplace
         run: |
           if [ -z "${{ secrets.VSCE_PAT }}" ]; then
             echo "VSCE_PAT secret is not set."
             exit 1
           fi
-          npx @vscode/vsce publish --no-dependencies -p "${{ secrets.VSCE_PAT }}"
+          npx @vscode/vsce publish --no-dependencies -p "${{ secrets.VSCE_PAT }}" --packagePath "${{ steps.package.outputs.vsix_path }}"
+
+      - name: Create GitHub Release (attach VSIX)
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.package.outputs.vsix_path }}
