@@ -115,7 +115,10 @@ function Exec
         $output | ForEach-Object { Write-Host $_ }
         throw "Command failed (exit $exitCode): $Command"
     }
-    return $output
+
+    # PowerShell can return either a single string or an array of strings depending on the command.
+    # Always normalize to an array of strings so callers can safely index/pipeline.
+    return @($output | ForEach-Object { "$_" })
 }
 
 function Parse-SemVer
@@ -184,7 +187,7 @@ if ($Bump -and $SetVersion)
     throw "Specify only one of -Bump or -SetVersion."
 }
 
-$currentBranch = (Exec "git rev-parse --abbrev-ref HEAD")[0].Trim()
+$currentBranch = (Exec "git rev-parse --abbrev-ref HEAD" | Select-Object -First 1).Trim()
 if (-not $Force -and $currentBranch -ne $Branch)
 {
     throw "You are on '$currentBranch' but -Branch is '$Branch'. Switch branches or pass -Force."
@@ -193,7 +196,7 @@ if (-not $Force -and $currentBranch -ne $Branch)
 # Basic safety checks
 Exec "git rev-parse --is-inside-work-tree" | Out-Null
 
-$gitStatus = Exec "git status --porcelain"
+$gitStatus = @(Exec "git status --porcelain")
 if ($gitStatus.Count -gt 0)
 {
     throw "Working tree is not clean. Commit or stash changes before releasing."
@@ -260,7 +263,7 @@ if ($Bump -or $SetVersion)
         Exec "git commit -m \"$msg\"" | Out-Null
     }
 
-    $gitStatusAfterCommit = Exec "git status --porcelain"
+    $gitStatusAfterCommit = @(Exec "git status --porcelain")
     if ($gitStatusAfterCommit.Count -gt 0)
     {
         throw "Working tree is not clean after committing version bump."
@@ -274,14 +277,14 @@ Write-Host "Version: $version"
 Write-Host "Tag:     $tag"
 
 # Ensure tag doesn't already exist locally
-$existingLocalTag = Exec "git tag -l \"$tag\""
+$existingLocalTag = @(Exec "git tag -l \"$tag\"")
 if ($existingLocalTag.Count -gt 0 -and -not $Force)
 {
     throw "Tag '$tag' already exists locally. Use -Force to overwrite (not recommended)."
 }
 
 # Ensure tag doesn't already exist on remote
-$existingRemote = Exec "git ls-remote --tags $Remote $tag"
+$existingRemote = @(Exec "git ls-remote --tags $Remote $tag")
 if ($existingRemote.Count -gt 0 -and -not $Force)
 {
     throw "Tag '$tag' already exists on remote '$Remote'. Refusing to continue."
