@@ -1,0 +1,22 @@
+# By default, vsce packages most files in the extension folder.
+# Keep the VSIX lean by excluding dev tooling, repo metadata, and artifacts.
+
+# VCS / repo metadata
+.git/
+.github/
+
+# Editor / workspace settings
+.vscode/
+
+# Build and packaging artifacts
+*.vsix
+
+# Dev scripts
+*.ps1
+
+# Source assets not needed at runtime
+images/*.xcf
+
+# OS cruft
+.DS_Store
+Thumbs.db

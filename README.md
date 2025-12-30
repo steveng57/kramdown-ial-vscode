@@ -135,3 +135,31 @@ This repo is set up for local packaging via `vsce`:
 2. In VS Code, run: `Extensions: Install from VSIX...`
 3. Pick the generated `.vsix` file (for example `kramdown-ial-injection-0.0.1.vsix`).
 4. Run: `Developer: Reload Window`
+
+## CI/CD (GitHub Actions)
+
+This repo includes workflows that can:
+
+- Build and package a `.vsix` on every PR and on pushes to `main` (uploaded as a workflow artifact)
+- Publish to the VS Code Marketplace on version tags (or manually)
+
+### Package on PR / main
+
+- Workflow: `.github/workflows/ci.yml`
+- Output: a `vsix` artifact containing `*.vsix`
+
+### Publish to Marketplace
+
+- Workflow: `.github/workflows/publish.yml`
+- Triggers: push a tag like `v0.1.15`
+
+Prerequisites:
+
+1. Update `publisher` in `package.json` to your actual Marketplace publisher ID (it is currently `local`).
+2. Create a Marketplace Personal Access Token (PAT) and add it as a repo secret named `VSCE_PAT`.
+
+Notes:
+
+- Publishing will fail if the extension version in `package.json` is already published.
+- Tagging does not automatically bump versions; bump `package.json` first, then tag.
+- The publish workflow validates that the tag version matches `package.json`.
