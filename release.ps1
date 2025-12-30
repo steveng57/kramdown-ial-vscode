@@ -111,19 +111,19 @@ function Exec
         [Parameter(Mandatory = $true, Position = 0)]
         [string]$File,
 
-        [Parameter(ValueFromRemainingArguments = $true)]
-        [string[]]$Args
+        [Parameter(Position = 1, ValueFromRemainingArguments = $true)]
+        [string[]]$Arguments
     )
 
-    $display = @($File) + @($Args)
+    $display = @($File) + @($Arguments)
     Write-Host ("> " + ($display -join ' '))
 
-    $output = & $File @Args 2>&1
+    $output = & $File @Arguments 2>&1
     $exitCode = $LASTEXITCODE
     if ($exitCode -ne 0)
     {
         $output | ForEach-Object { Write-Host $_ }
-        throw "Command failed (exit $exitCode): $File $($Args -join ' ')"
+        throw "Command failed (exit $exitCode): $File $($Arguments -join ' ')"
     }
 
     # Normalize to an array of strings so callers can safely pipeline/index.
