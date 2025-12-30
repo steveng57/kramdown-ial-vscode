@@ -7,7 +7,7 @@ param(
     # Default is derived from package.json ("publisher.name").
     [string]$ExtensionId,
 
-    # Optional override: install this VSIX instead of the newest *.vsix in the repo root.
+    # Optional override: install this VSIX instead of the newest *.vsix in .\artifacts.
     [string]$VsixPath
 )
 
@@ -57,13 +57,14 @@ function Resolve-VsixPath
         return (Resolve-Path -LiteralPath $Path).Path
     }
 
-    $latest = Get-ChildItem -Path $scriptDir -Filter '*.vsix' -File -ErrorAction SilentlyContinue |
+    $artifactsDir = Join-Path $scriptDir 'artifacts'
+    $latest = Get-ChildItem -Path $artifactsDir -Filter '*.vsix' -File -ErrorAction SilentlyContinue |
     Sort-Object -Property LastWriteTime -Descending |
     Select-Object -First 1
 
     if ($null -eq $latest)
     {
-        throw "No .vsix found in repo root. Run '.\\package-vsix.ps1' (or 'npm run package') first."
+        throw "No .vsix found in .\\artifacts\\. Run '.\\package-vsix.ps1' (or 'npm run package') first."
     }
 
     return $latest.FullName

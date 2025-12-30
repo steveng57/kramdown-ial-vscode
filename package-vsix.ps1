@@ -11,11 +11,13 @@ if (-not (Get-Command npm -ErrorAction SilentlyContinue))
     throw "npm was not found on PATH. Install Node.js (which includes npm) and try again."
 }
 
-Write-Host "Packaging VSIX via 'npm run package'..." -ForegroundColor Cyan
+Write-Host "Packaging VSIX via 'npm run package' (output: .\\artifacts\\)..." -ForegroundColor Cyan
 npm run package
 
-# Best-effort: show the newest VSIX created in the repo root.
-$latestVsix = Get-ChildItem -Path $scriptDir -Filter '*.vsix' -File -ErrorAction SilentlyContinue |
+$artifactsDir = Join-Path $scriptDir 'artifacts'
+
+# Best-effort: show the newest VSIX created in artifacts.
+$latestVsix = Get-ChildItem -Path $artifactsDir -Filter '*.vsix' -File -ErrorAction SilentlyContinue |
 Sort-Object -Property LastWriteTime -Descending |
 Select-Object -First 1
 
@@ -25,5 +27,5 @@ if ($null -ne $latestVsix)
 }
 else
 {
-    Write-Host "Package finished, but no .vsix was found in the repo root." -ForegroundColor Yellow
+    Write-Host "Package finished, but no .vsix was found in .\\artifacts\\." -ForegroundColor Yellow
 }

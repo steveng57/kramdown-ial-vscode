@@ -133,7 +133,7 @@ This repo is set up for local packaging via `vsce`:
 
 1. From this folder, run: `npm run package`
 2. In VS Code, run: `Extensions: Install from VSIX...`
-3. Pick the generated `.vsix` file (for example `kramdown-ial-injection-0.0.1.vsix`).
+3. Pick the generated `.vsix` file from `./artifacts/` (for example `kramdown-ial-injection-0.0.1.vsix`).
 4. Run: `Developer: Reload Window`
 
 ## CI/CD (GitHub Actions)
@@ -146,7 +146,7 @@ This repo includes workflows that can:
 ### Package on PR / main
 
 - Workflow: `.github/workflows/ci.yml`
-- Output: a `vsix` artifact containing `*.vsix`
+- Output: a `vsix` artifact containing `artifacts/*.vsix`
 
 ### Publish to Marketplace
 

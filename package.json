@@ -18,7 +18,7 @@
     "Themes"
   ],
   "scripts": {
-    "package": "npx @vscode/vsce package --no-dependencies"
+    "package": "node -e \"const fs=require('fs'); const {spawnSync}=require('child_process'); const pkg=require('./package.json'); fs.mkdirSync('artifacts',{recursive:true}); const out='artifacts/'+pkg.name+'-'+pkg.version+'.vsix'; const r=spawnSync('npx',['@vscode/vsce','package','--no-dependencies','--out',out],{stdio:'inherit',shell:true}); process.exit(r.status===null?1:r.status);\""
   },
   "contributes": {
     "grammars": [
