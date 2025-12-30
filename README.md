@@ -1,6 +1,6 @@
 # Kramdown IAL (Markdown Injection)
 
-VS Code extension that injects a TextMate grammar into Markdown to give **Kramdown inline attribute lists** (`{: ... }`) distinct scopes for syntax highlighting.
+VS Code extension that injects a TextMate grammar into Markdown to give **Kramdown inline attribute lists** (`{: ... }`) distinct scopes for syntax highlighting.  Also includes compatible dark and light VS Code themes.
 
 Examples it targets:
 
